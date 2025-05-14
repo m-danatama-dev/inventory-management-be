@@ -1,14 +1,17 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
-export default class SaleItem extends BaseModel {
+export default class PurchaseItem extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
   @column()
-  declare name: string
+  declare type: 'gkg' | 'gks'
 
   @column()
   declare quantity: number
+
+  @column()
+  declare numberOfSack: number
 
   @column()
   declare price: number
@@ -17,5 +20,5 @@ export default class SaleItem extends BaseModel {
   declare total: number
 
   @column()
-  declare saleTransactionId: number
+  declare purchaseTransactionId: number
 }

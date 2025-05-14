@@ -1,21 +1,21 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
-export default class SaleTransaction extends BaseModel {
+export default class StorageProcess extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
   @column()
-  declare buyerName: string
+  declare quantity: number
 
   @column()
-  declare origin: string
+  declare numberOfSack: number
 
   @column()
   declare responsiblePersonID: string
 
   @column()
-  declare totalAmount: number
+  declare type: 'bulog' | 'pasar'
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
