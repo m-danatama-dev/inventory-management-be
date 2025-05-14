@@ -1,0 +1,26 @@
+import { BaseSchema } from '@adonisjs/lucid/schema'
+
+export default class extends BaseSchema {
+  protected tableName = 'sale_transactions'
+
+  async up() {
+    this.schema.createTable(this.tableName, (table) => {
+      table.increments('id')
+      table.string('buyer_name').notNullable()
+      table.string('origin').notNullable()
+      table
+        .integer('responsible_person')
+        .unsigned()
+        .references('id')
+        .inTable('users')
+        .onDelete('CASCADE')
+      table.decimal('total_amount', 10, 2).notNullable()
+      table.timestamp('created_at')
+      table.timestamp('updated_at')
+    })
+  }
+
+  async down() {
+    this.schema.dropTable(this.tableName)
+  }
+}

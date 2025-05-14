@@ -52,7 +52,12 @@ export default class AuthController {
         })
       }
 
-      const user = await User.create({ email: data.email, password: data.password })
+      const user = await User.create({
+        email: data.email,
+        password: data.password,
+        fullName: data.full_name,
+        phoneNumber: data.phone_number,
+      })
       await mail.send(new VerifyEmailNotification(user))
 
       return response.ok({

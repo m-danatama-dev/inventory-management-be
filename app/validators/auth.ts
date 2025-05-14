@@ -8,6 +8,8 @@ export default class AuthValidator {
 
   static registerSchema = vine.object({
     email: vine.string().trim().email(),
+    full_name: vine.string(),
+    phone_number: vine.string().minLength(10).maxLength(15),
     password: vine.string().minLength(8).confirmed(),
   })
 
