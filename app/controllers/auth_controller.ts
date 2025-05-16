@@ -1,12 +1,11 @@
-import type { HttpContext } from '@adonisjs/core/http'
+import { HttpContext } from '@adonisjs/core/http'
 import vine from '@vinejs/vine'
-import { DateTime } from 'luxon'
+import AuthValidator from '#validators/auth'
+import AuthService from '#services/auth_service'
+import messagesProvider from '#helpers/validation_messages_provider'
+import VerifyEmailNotification from '#mails/verify_email_notification'
 import User from '#models/user'
 import mail from '@adonisjs/mail/services/main'
-import VerifyEmailNotification from '#mails/verify_email_notification'
-import ResetPasswordNotification from '#mails/reset_password_notification'
-import AuthValidator from '#validators/auth'
-import messagesProvider from '#helpers/validation_messages_provider'
 
 export default class AuthController {
   async login({ request, response }: HttpContext) {
@@ -15,26 +14,16 @@ export default class AuthController {
       .validate(request.all(), { messagesProvider })
 
     try {
-      const user = await User.verifyCredentials(data.email, data.password)
-      const token = await User.accessTokens.create(user, ['*'], { expiresIn: '1 days' })
-
-      if (!token.value!.release()) {
-        return response.unprocessableEntity({
-          success: false,
-          message: 'Invalid email or password.',
-        })
-      }
-
+      const token = await AuthService.login(data)
       return response.ok({
         success: true,
         message: 'Login successful.',
-        data: token.value!.release(),
+        data: token,
       })
     } catch (error) {
       return response.unprocessableEntity({
         success: false,
-        message: 'Invalid email or password.',
-        error: error.message,
+        message: error.message,
       })
     }
   }
@@ -45,21 +34,7 @@ export default class AuthController {
       .validate(request.all(), { messagesProvider })
 
     try {
-      if (await User.query().where('email', data.email).first()) {
-        return response.conflict({
-          success: false,
-          message: 'The email has already been taken.',
-        })
-      }
-
-      const user = await User.create({
-        email: data.email,
-        password: data.password,
-        fullName: data.full_name,
-        phoneNumber: data.phone_number,
-      })
-      await mail.send(new VerifyEmailNotification(user))
-
+      await AuthService.register(data)
       return response.ok({
         success: true,
         message: 'Please check your email inbox (and spam) for an access link.',
@@ -67,8 +42,7 @@ export default class AuthController {
     } catch (error) {
       return response.unprocessableEntity({
         success: false,
-        message: 'Registration failed.',
-        error: error.message,
+        message: error.message,
       })
     }
   }
@@ -116,6 +90,7 @@ export default class AuthController {
 
       const email = decodeURIComponent(params.email)
       const user = await User.query().where('id', params.id).where('email', email).first()
+
       if (!user) {
         return response.unprocessableEntity({
           success: false,
@@ -123,10 +98,7 @@ export default class AuthController {
         })
       }
 
-      if (!user.emailVerifiedAt) {
-        user.emailVerifiedAt = DateTime.utc()
-        await user.save()
-      }
+      await AuthService.verifyEmail(user)
 
       return response.ok({
         success: true,
@@ -135,8 +107,7 @@ export default class AuthController {
     } catch (error) {
       return response.internalServerError({
         success: false,
-        message: 'Email verification failed.',
-        error: error.message,
+        message: error.message,
       })
     }
   }
@@ -170,15 +141,7 @@ export default class AuthController {
       .validate(request.all(), { messagesProvider })
 
     try {
-      const user = await User.findBy('email', data.email)
-      if (!user) {
-        return response.unprocessableEntity({
-          success: false,
-          message: "We can't find a user with that e-mail address.",
-        })
-      }
-
-      await mail.send(new ResetPasswordNotification(user))
+      await AuthService.forgotPassword(data.email)
       return response.ok({
         success: true,
         message: 'Please check your email inbox (and spam) for a password reset link.',
@@ -186,8 +149,7 @@ export default class AuthController {
     } catch (error) {
       return response.internalServerError({
         success: false,
-        message: 'Failed to send password reset email.',
-        error: error.message,
+        message: error.message,
       })
     }
   }
@@ -200,29 +162,20 @@ export default class AuthController {
       })
     }
 
-    const user = await User.find(params.id)
-    if (!user) {
-      return response.unprocessableEntity({
-        success: false,
-        message: 'Invalid reset password link.',
-      })
-    }
-
-    if (encodeURIComponent(user.password) !== params.token) {
-      return response.unprocessableEntity({
-        success: false,
-        message: 'Invalid reset password link.',
-      })
-    }
-
     const data = await vine
       .compile(AuthValidator.resetPasswordSchema)
       .validate(request.all(), { messagesProvider })
 
-    try {
-      user.password = data.password
-      await user.save()
+    const user = await User.find(params.id)
+    if (!user || encodeURIComponent(user.password) !== params.token) {
+      return response.unprocessableEntity({
+        success: false,
+        message: 'Invalid reset password link.',
+      })
+    }
 
+    try {
+      await AuthService.resetPassword(user, data.password)
       return response.ok({
         success: true,
         message: 'Password reset successfully.',
@@ -230,8 +183,7 @@ export default class AuthController {
     } catch (error) {
       return response.internalServerError({
         success: false,
-        message: 'Failed to reset password.',
-        error: error.message,
+        message: error.message,
       })
     }
   }

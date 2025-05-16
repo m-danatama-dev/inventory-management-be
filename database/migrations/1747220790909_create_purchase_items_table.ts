@@ -17,7 +17,6 @@ export default class extends BaseSchema {
         .references('id')
         .inTable('purchase_transactions')
         .onDelete('CASCADE')
-      table.decimal('total_amount', 10, 2).notNullable()
     })
   }
 

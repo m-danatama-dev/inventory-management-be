@@ -14,6 +14,7 @@ export default class extends BaseSchema {
         .references('id')
         .inTable('users')
         .onDelete('CASCADE')
+      table.decimal('total_amount', 10, 2).notNullable()
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })
