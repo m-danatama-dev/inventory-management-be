@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
+import SaleItem from './sale_item.js'
 
 export default class SaleTransaction extends BaseModel {
   @column({ isPrimary: true })
@@ -17,9 +19,15 @@ export default class SaleTransaction extends BaseModel {
   @column()
   declare totalAmount: number
 
+  @column()
+  declare status: 'pending' | 'done'
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @hasMany(() => SaleItem)
+  public items!: HasMany<typeof SaleItem>
 }
