@@ -13,6 +13,7 @@ import { sep, normalize } from 'node:path'
 import app from '@adonisjs/core/services/app'
 import authRoute from './routes/v1/auth_route.js'
 import salesTransactionRoute from './routes/v1/sale_transaction.js'
+import purchaseTrasactionRoute from './routes/v1/purchase_transaction.js'
 
 const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 
@@ -27,6 +28,7 @@ router
   .group(() => {
     authRoute()
     salesTransactionRoute()
+    purchaseTrasactionRoute()
   })
   .prefix('/api/v1')
 

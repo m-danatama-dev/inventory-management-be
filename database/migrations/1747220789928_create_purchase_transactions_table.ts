@@ -15,6 +15,7 @@ export default class extends BaseSchema {
         .inTable('users')
         .onDelete('CASCADE')
       table.decimal('total_amount', 10, 2).notNullable()
+      table.enum('status', ['pending', 'done']).notNullable()
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })
