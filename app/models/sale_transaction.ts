@@ -14,6 +14,9 @@ export default class SaleTransaction extends BaseModel {
   declare origin: string
 
   @column()
+  declare type: 'bulog' | 'pasar' | 'general'
+
+  @column()
   declare responsiblePersonID: string
 
   @column()

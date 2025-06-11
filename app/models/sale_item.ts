@@ -5,7 +5,7 @@ export default class SaleItem extends BaseModel {
   declare id: number
 
   @column()
-  declare name: string
+  declare name: 'rice5Kg' | 'rice10Kg' | 'rice25Kg' | 'rice50Kg' | 'bran' | 'reject' | 'menir'
 
   @column()
   declare quantity: number

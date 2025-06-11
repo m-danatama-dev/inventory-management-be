@@ -6,16 +6,20 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('name').notNullable()
-      table.integer('quantity').notNullable()
-      table.decimal('price', 10, 2).notNullable()
-      table.decimal('total', 10, 2).notNullable()
       table
-        .integer('sale_transaction_id')
+        .enu('name', ['rice5Kg', 'rice10Kg', 'rice25Kg', 'rice50Kg', 'bran', 'reject', 'menir'])
+        .notNullable()
+      table.integer('quantity').notNullable()
+      table.integer('price').notNullable()
+      table.integer('total').notNullable()
+      table
+        .integer('saleTransactionId')
         .unsigned()
         .references('id')
         .inTable('sale_transactions')
         .onDelete('CASCADE')
+      table.timestamp('created_at')
+      table.timestamp('updated_at')
     })
   }
 
