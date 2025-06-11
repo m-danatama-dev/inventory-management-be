@@ -1,12 +1,12 @@
-import DryingProces from '#models/drying_proces'
+import DryingProcess from '#models/drying_process'
 
-export default class DryingProcesService {
+export default class DryingProcessService {
   static async getAllDryingProcesses() {
-    return await DryingProces.all()
+    return await DryingProcess.all()
   }
 
-  static async storeDryingProce(data: any) {
-    const trx = await DryingProces.create({
+  static async storeDryingProcess(data: any) {
+    const trx = await DryingProcess.create({
       type: data.type,
       quantity: data.quantity,
       numberOfSack: data.numberOfSack,
@@ -15,16 +15,16 @@ export default class DryingProcesService {
     return trx
   }
 
-  static async getDryingProceById(id: number) {
-    const trx = await DryingProces.find(id)
+  static async getDryingProcessById(id: number) {
+    const trx = await DryingProcess.find(id)
     if (!trx) {
       throw new Error('Drying process not found')
     }
     return trx
   }
 
-  static async updateDryingProce(id: number, data: any) {
-    const trx = await DryingProces.findOrFail(id)
+  static async updateDryingProcess(id: number, data: any) {
+    const trx = await DryingProcess.findOrFail(id)
     trx.type = data.type || trx.type
     trx.quantity = data.quantity || trx.quantity
     trx.numberOfSack = data.numberOfSack || trx.numberOfSack
@@ -33,8 +33,8 @@ export default class DryingProcesService {
     return trx
   }
 
-  static async deleteDryingProce(id: number) {
-    const trx = await DryingProces.findOrFail(id)
+  static async deleteDryingProcess(id: number) {
+    const trx = await DryingProcess.findOrFail(id)
     await trx.delete()
     return trx
   }

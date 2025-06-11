@@ -1,10 +1,10 @@
 import { HttpContext } from '@adonisjs/core/http'
-import DryingProceService from '#services/drying_proces_service'
+import DryingProcessService from '#services/drying_process_service'
 
-export default class DryingProceController {
+export default class DryingProcessesController {
   async index({ response }: HttpContext) {
     try {
-      const dryingProcesses = await DryingProceService.getAllDryingProcesses()
+      const dryingProcesses = await DryingProcessService.getAllDryingProcesses()
       return response.ok({
         success: true,
         message: 'Drying processes retrieved successfully.',
@@ -22,7 +22,7 @@ export default class DryingProceController {
   async store({ request, response }: HttpContext) {
     const data = request.all()
     try {
-      const dryingProces = await DryingProceService.storeDryingProce(data)
+      const dryingProces = await DryingProcessService.storeDryingProcess(data)
 
       return response.created({
         success: true,
@@ -40,7 +40,7 @@ export default class DryingProceController {
 
   async show({ params, response }: HttpContext) {
     try {
-      const dryingProces = await DryingProceService.getDryingProceById(params.id)
+      const dryingProces = await DryingProcessService.getDryingProcessById(params.id)
       return response.ok({
         success: true,
         message: 'Drying process retrieved successfully.',
@@ -58,7 +58,7 @@ export default class DryingProceController {
   async update({ params, request, response }: HttpContext) {
     const data = request.all()
     try {
-      const dryingProces = await DryingProceService.updateDryingProce(params.id, data)
+      const dryingProces = await DryingProcessService.updateDryingProcess(params.id, data)
       return response.ok({
         success: true,
         message: 'Drying process updated successfully.',
@@ -75,7 +75,7 @@ export default class DryingProceController {
 
   async delete({ params, response }: HttpContext) {
     try {
-      const dryingProces = await DryingProceService.deleteDryingProce(params.id)
+      const dryingProces = await DryingProcessService.deleteDryingProcess(params.id)
       return response.ok({
         success: true,
         message: 'Drying process deleted successfully.',

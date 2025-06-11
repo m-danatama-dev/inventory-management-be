@@ -14,7 +14,8 @@ import app from '@adonisjs/core/services/app'
 import authRoute from './routes/v1/auth_route.js'
 import salesTransactionRoute from './routes/v1/sale_transaction.js'
 import purchaseTrasactionRoute from './routes/v1/purchase_transaction.js'
-import dryingProceRoutes from './routes/v1/drying_proces.js'
+import dryingProcessRoutes from './routes/v1/drying_process.js'
+import storageProcessRoutes from './routes/v1/storage_process.js'
 
 const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 
@@ -30,7 +31,8 @@ router
     authRoute()
     salesTransactionRoute()
     purchaseTrasactionRoute()
-    dryingProceRoutes()
+    dryingProcessRoutes()
+    storageProcessRoutes()
   })
   .prefix('/api/v1')
 
