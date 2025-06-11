@@ -44,32 +44,6 @@ export default class PurchaseTransactionService {
     return purchaseTransaction
   }
 
-  static async updateTransaction(id: number, data: any) {
-    const purchaseTransaction = await PurchaseTransaction.findOrFail(id)
-    purchaseTransaction.supplierName = data.supplierName || purchaseTransaction.supplierName
-    purchaseTransaction.origin = data.origin || purchaseTransaction.origin
-    purchaseTransaction.responsiblePersonID =
-      data.responsiblePersonID || purchaseTransaction.responsiblePersonID
-    purchaseTransaction.totalAmount = data.totalAmount || purchaseTransaction.totalAmount
-    await purchaseTransaction.save()
-
-    if (data.items) {
-      await PurchaseItem.query().where('PurchaseTransactionId', purchaseTransaction.id).delete()
-      const items = data.items.map((item: any) => {
-        return {
-          quantity: item.quantity,
-          numberOfSack: item.numberOfSack,
-          type: item.type,
-          price: item.price,
-          total: item.total,
-          purchaseTransactionId: purchaseTransaction.id,
-        }
-      })
-      await PurchaseItem.createMany(items)
-    }
-    return purchaseTransaction
-  }
-
   static async deleteTransaction(id: number) {
     const purchaseTransaction = await PurchaseTransaction.findOrFail(id)
     await PurchaseItem.query().where('purchaseTransactionId', purchaseTransaction.id).delete()

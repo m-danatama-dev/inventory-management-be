@@ -54,24 +54,6 @@ export default class MillingProcessController {
     }
   }
 
-  async update({ params, request, response }: HttpContext) {
-    const data = request.all()
-    try {
-      const millingProcess = await MillingProcessService.updateMillingProcess(params.id, data)
-      return response.ok({
-        success: true,
-        message: 'Milling process updated successfully.',
-        data: millingProcess,
-      })
-    } catch (error) {
-      return response.internalServerError({
-        success: false,
-        message: 'Failed to update milling process.',
-        error: error.message,
-      })
-    }
-  }
-
   async delete({ params, response }: HttpContext) {
     try {
       const millingProcess = await MillingProcessService.deleteMillingProcess(params.id)

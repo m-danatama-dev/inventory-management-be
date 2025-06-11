@@ -54,24 +54,6 @@ export default class SaleTransactionController {
     }
   }
 
-  async update({ params, request, response }: HttpContext) {
-    const data = request.all()
-    try {
-      const saleTransaction = await SaleTransactionService.updateTransaction(params.id, data)
-      return response.ok({
-        success: true,
-        message: 'Sale transaction updated successfully.',
-        data: saleTransaction,
-      })
-    } catch (error) {
-      return response.internalServerError({
-        success: false,
-        message: 'Failed to update sale transaction.',
-        error: error.message,
-      })
-    }
-  }
-
   async delete({ params, response }: HttpContext) {
     try {
       const saleTransaction = await SaleTransactionService.deleteTransaction(params.id)

@@ -7,7 +7,6 @@ export default function millingProcessRoutes() {
       router.get('/', [MillingProcessesController, 'index'])
       router.post('/', [MillingProcessesController, 'store'])
       router.get('/:id', [MillingProcessesController, 'show'])
-      router.put('/:id', [MillingProcessesController, 'update'])
       router.delete('/:id', [MillingProcessesController, 'delete'])
     })
     .prefix('/milling-processes')

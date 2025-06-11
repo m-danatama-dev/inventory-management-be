@@ -8,6 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.string('buyer_name').notNullable()
       table.string('origin').notNullable()
+      table.enum('type', ['bulog', 'pasar', 'general']).notNullable()
       table
         .integer('responsible_person_id')
         .unsigned()

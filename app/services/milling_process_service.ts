@@ -41,6 +41,8 @@ export default class MillingProcessService {
       data.menir
     )
 
+    await StockService.updateStock('general', 0, 0, 0, 0, 0, data.bran, data.reject, data.menir)
+
     return millingProcess
   }
 
@@ -50,41 +52,6 @@ export default class MillingProcessService {
     if (!millingProcess) {
       throw new Error('Milling process not found')
     }
-
-    return millingProcess
-  }
-
-  static async updateMillingProcess(id: number, data: any) {
-    const millingProcess = await MillingProcess.findOrFail(id)
-    millingProcess.type = data.type || millingProcess.type
-    millingProcess.quantity = data.quantity || millingProcess.quantity
-    millingProcess.numberOfSack = data.numberOfSack || millingProcess.numberOfSack
-    millingProcess.responsiblePersonID =
-      data.responsiblePersonID || millingProcess.responsiblePersonID
-    await millingProcess.save()
-
-    const millingResult = await MillingResult.findOrFail(millingProcess.resultId)
-    millingResult.rice5Kg = data.rice5Kg || millingResult.rice5Kg
-    millingResult.rice10Kg = data.rice10Kg || millingResult.rice10Kg
-    millingResult.rice25Kg = data.rice25Kg || millingResult.rice25Kg
-    millingResult.rice50Kg = data.rice50Kg || millingResult.rice50Kg
-    millingResult.bran = data.bran || millingResult.bran
-    millingResult.reject = data.reject || millingResult.reject
-    millingResult.menir = data.menir || millingResult.menir
-    millingResult.total = data.total || millingResult.total
-    await millingResult.save()
-
-    await StockService.updateStock(
-      data.type,
-      -data.quantity + millingProcess.quantity,
-      data.rice5Kg,
-      data.rice10Kg,
-      data.rice25Kg,
-      data.rice50Kg,
-      data.bran,
-      data.reject,
-      data.menir
-    )
 
     return millingProcess
   }
@@ -107,6 +74,19 @@ export default class MillingProcessService {
       -millingResult.reject,
       -millingResult.menir
     )
+
+    await StockService.updateStock(
+      'general',
+      0,
+      0,
+      0,
+      0,
+      0,
+      -millingResult.bran,
+      -millingResult.reject,
+      -millingResult.menir
+    )
+
     return millingProcess
   }
 }

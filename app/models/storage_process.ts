@@ -6,6 +6,9 @@ export default class StorageProcess extends BaseModel {
   declare id: number
 
   @column()
+  declare type: 'bulog' | 'pasar'
+
+  @column()
   declare quantity: number
 
   @column()
@@ -13,9 +16,6 @@ export default class StorageProcess extends BaseModel {
 
   @column()
   declare responsiblePersonID: string
-
-  @column()
-  declare type: 'bulog' | 'pasar'
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

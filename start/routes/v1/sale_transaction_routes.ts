@@ -7,7 +7,6 @@ export default function salesTransactionRoutes() {
       router.get('/', [SaleTransactionController, 'index'])
       router.post('/', [SaleTransactionController, 'store'])
       router.get('/:id', [SaleTransactionController, 'show'])
-      router.put('/:id', [SaleTransactionController, 'update'])
       router.delete('/:id', [SaleTransactionController, 'delete'])
     })
     .prefix('/sale-transactions')

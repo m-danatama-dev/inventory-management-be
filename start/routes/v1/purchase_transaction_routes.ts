@@ -7,7 +7,6 @@ export default function purchasesTransactionRoute() {
       router.get('/', [PurchaseTransactionController, 'index'])
       router.post('/', [PurchaseTransactionController, 'store'])
       router.get('/:id', [PurchaseTransactionController, 'show'])
-      router.put('/:id', [PurchaseTransactionController, 'update'])
       router.delete('/:id', [PurchaseTransactionController, 'delete'])
     })
     .prefix('/purchase-transactions')
