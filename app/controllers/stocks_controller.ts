@@ -4,11 +4,11 @@ import StockService from '#services/stock_service'
 export default class StocksController {
   async index({ response }: HttpContext) {
     try {
-      const transactions = await StockService.getAllStocks()
+      const stocks = await StockService.getAllStocks()
       return response.ok({
         success: true,
         message: 'Stocks retrieved successfully.',
-        data: transactions,
+        data: stocks,
       })
     } catch (error) {
       return response.internalServerError({
@@ -21,11 +21,11 @@ export default class StocksController {
 
   async show({ params, response }: HttpContext) {
     try {
-      const transaction = await StockService.getStockByType(params.type)
+      const stock = await StockService.getStockByType(params.type)
       return response.ok({
         success: true,
         message: 'Stock retrieved successfully.',
-        data: transaction,
+        data: stock,
       })
     } catch (error) {
       return response.notFound({

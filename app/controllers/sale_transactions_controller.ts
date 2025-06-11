@@ -4,11 +4,11 @@ import SaleTransactionService from '#services/sale_transaction_service'
 export default class SaleTransactionController {
   async index({ response }: HttpContext) {
     try {
-      const transactions = await SaleTransactionService.getAllTransactions()
+      const saleTransactions = await SaleTransactionService.getAllTransactions()
       return response.ok({
         success: true,
         message: 'Sale transactions retrieved successfully.',
-        data: transactions,
+        data: saleTransactions,
       })
     } catch (error) {
       return response.internalServerError({
@@ -22,12 +22,11 @@ export default class SaleTransactionController {
   async store({ request, response }: HttpContext) {
     const data = request.all()
     try {
-      const transaction = await SaleTransactionService.storeTransaction(data)
-
+      const saleTransaction = await SaleTransactionService.storeTransaction(data)
       return response.created({
         success: true,
         message: 'Sale transaction created successfully.',
-        data: transaction,
+        data: saleTransaction,
       })
     } catch (error) {
       return response.internalServerError({
@@ -40,11 +39,11 @@ export default class SaleTransactionController {
 
   async show({ params, response }: HttpContext) {
     try {
-      const transaction = await SaleTransactionService.getTransactionById(params.id)
+      const saleTransaction = await SaleTransactionService.getTransactionById(params.id)
       return response.ok({
         success: true,
         message: 'Sale transaction retrieved successfully.',
-        data: transaction,
+        data: saleTransaction,
       })
     } catch (error) {
       return response.notFound({
@@ -58,11 +57,11 @@ export default class SaleTransactionController {
   async update({ params, request, response }: HttpContext) {
     const data = request.all()
     try {
-      const transaction = await SaleTransactionService.updateTransaction(params.id, data)
+      const saleTransaction = await SaleTransactionService.updateTransaction(params.id, data)
       return response.ok({
         success: true,
         message: 'Sale transaction updated successfully.',
-        data: transaction,
+        data: saleTransaction,
       })
     } catch (error) {
       return response.internalServerError({
@@ -75,11 +74,11 @@ export default class SaleTransactionController {
 
   async delete({ params, response }: HttpContext) {
     try {
-      const transaction = await SaleTransactionService.deleteTransaction(params.id)
+      const saleTransaction = await SaleTransactionService.deleteTransaction(params.id)
       return response.ok({
         success: true,
         message: 'Sale transaction deleted successfully.',
-        data: transaction,
+        data: saleTransaction,
       })
     } catch (error) {
       return response.internalServerError({
