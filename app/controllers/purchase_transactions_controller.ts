@@ -23,6 +23,7 @@ export default class PurchaseTransactionController {
     const data = request.all()
     try {
       const transaction = await PurchaseTransactionService.storeTransaction(data)
+      console.log('Transaction created:', transaction)
 
       return response.created({
         success: true,

@@ -18,11 +18,12 @@ export default class PurchaseTransactionService {
 
     const items = data.items.map((item: any) => {
       return {
-        name: item.name,
         quantity: item.quantity,
+        numberOfSack: item.numberOfSack,
+        type: item.type,
         price: item.price,
         total: item.total,
-        PurchaseTransactionId: trx.id,
+        purchaseTransactionId: trx.id,
       }
     })
 
@@ -53,11 +54,12 @@ export default class PurchaseTransactionService {
       await PurchaseItem.query().where('PurchaseTransactionId', trx.id).delete()
       const items = data.items.map((item: any) => {
         return {
-          name: item.name,
           quantity: item.quantity,
+          numberOfSack: item.numberOfSack,
+          type: item.type,
           price: item.price,
           total: item.total,
-          PurchaseTransactionId: trx.id,
+          purchaseTransactionId: trx.id,
         }
       })
       await PurchaseItem.createMany(items)
@@ -67,7 +69,8 @@ export default class PurchaseTransactionService {
 
   static async deleteTransaction(id: number) {
     const trx = await PurchaseTransaction.findOrFail(id)
-    await PurchaseItem.query().where('PurchaseTransactionId', trx.id).delete()
+    console.log('Deleting transaction:', trx.id)
+    await PurchaseItem.query().where('purchaseTransactionId', trx.id).delete()
     await trx.delete()
     return trx
   }
