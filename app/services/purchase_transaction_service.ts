@@ -7,7 +7,6 @@ export default class PurchaseTransactionService {
   }
 
   static async storeTransaction(data: any) {
-    console.log('Data received:', data)
     const trx = await PurchaseTransaction.create({
       supplierName: data.supplierName,
       origin: data.origin,
