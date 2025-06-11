@@ -6,6 +6,7 @@ import dryingProcessRoutes from './drying_process_routes.js'
 import storageProcessRoutes from './storage_process_routes.js'
 import millingProcessRoutes from './milling_process_routes.js'
 import stockRoutes from './stock_routes.js'
+import costRoutes from './cost_routes.js'
 
 export default function v1Routes() {
   router
@@ -17,6 +18,7 @@ export default function v1Routes() {
       dryingProcessRoutes()
       storageProcessRoutes()
       millingProcessRoutes()
+      costRoutes()
     })
     .prefix('/v1')
 }
