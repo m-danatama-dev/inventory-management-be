@@ -16,21 +16,22 @@ export default class StockService {
   static async updateStock(
     type: 'bulog' | 'pasar' | 'general',
     roughRice: number = 0,
-    rice5Kg: number = 0,
-    rice10Kg: number = 0,
-    rice25Kg: number = 0,
-    rice50Kg: number = 0,
+    rice5kg: number = 0,
+    rice10kg: number = 0,
+    rice25kg: number = 0,
+    rice50kg: number = 0,
     bran: number = 0,
     reject: number = 0,
     menir: number = 0
   ) {
     const stock = await Stock.findBy('type', type)
+
     if (stock) {
       stock.roughRice = stock.roughRice + roughRice
-      stock.rice5Kg = stock.rice5Kg + rice5Kg
-      stock.rice10Kg = stock.rice10Kg + rice10Kg
-      stock.rice25Kg = stock.rice25Kg + rice25Kg
-      stock.rice50Kg = stock.rice50Kg + rice50Kg
+      stock.rice5kg = stock.rice5kg + rice5kg
+      stock.rice10kg = stock.rice10kg + rice10kg
+      stock.rice25kg = stock.rice25kg + rice25kg
+      stock.rice50kg = stock.rice50kg + rice50kg
       stock.bran = stock.bran + bran
       stock.reject = stock.reject + reject
       stock.menir = stock.menir + menir
@@ -39,10 +40,10 @@ export default class StockService {
       await Stock.create({
         type,
         roughRice,
-        rice5Kg,
-        rice10Kg,
-        rice25Kg,
-        rice50Kg,
+        rice5kg,
+        rice10kg,
+        rice25kg,
+        rice50kg,
         bran,
         reject,
         menir,

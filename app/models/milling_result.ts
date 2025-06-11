@@ -4,17 +4,17 @@ export default class MillingResult extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
-  @column()
-  declare rice5Kg: number
+  @column({ columnName: 'rice_5kg' })
+  declare rice5kg: number
 
-  @column()
-  declare rice10Kg: number
+  @column({ columnName: 'rice_10kg' })
+  declare rice10kg: number
 
-  @column()
-  declare rice25Kg: number
+  @column({ columnName: 'rice_25kg' })
+  declare rice25kg: number
 
-  @column()
-  declare rice50Kg: number
+  @column({ columnName: 'rice_50kg' })
+  declare rice50kg: number
 
   @column()
   declare bran: number

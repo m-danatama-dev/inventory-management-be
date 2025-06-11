@@ -5,7 +5,7 @@ export default function stockRoutes() {
   router
     .group(() => {
       router.get('/', [StocksController, 'index'])
-      router.get('/:id', [StocksController, 'show'])
+      router.get('/:type', [StocksController, 'show'])
     })
     .prefix('/stocks')
 }

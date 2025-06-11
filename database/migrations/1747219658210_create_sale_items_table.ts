@@ -7,13 +7,13 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table
-        .enu('name', ['rice5Kg', 'rice10Kg', 'rice25Kg', 'rice50Kg', 'bran', 'reject', 'menir'])
+        .enu('name', ['rice_5kg', 'rice_10kg', 'rice_25kg', 'rice_50kg', 'bran', 'reject', 'menir'])
         .notNullable()
       table.integer('quantity').notNullable()
       table.integer('price').notNullable()
       table.integer('total').notNullable()
       table
-        .integer('saleTransactionId')
+        .integer('sale_transaction_id')
         .unsigned()
         .references('id')
         .inTable('sale_transactions')

@@ -10,6 +10,7 @@ export default class SaleTransactionService {
   static async storeTransaction(data: any) {
     const saleTransaction = await SaleTransaction.create({
       buyerName: data.buyerName,
+      type: data.type,
       origin: data.origin,
       responsiblePersonID: data.responsiblePersonID,
       totalAmount: data.totalAmount,
@@ -27,20 +28,35 @@ export default class SaleTransactionService {
     })
     await SaleItem.createMany(items)
 
-    for (let item of data.items) {
-      await StockService.updateStock(
-        data.type,
-        0,
-        item.name === 'rice5Kg' ? -item.quantity : 0,
-        item.name === 'rice10Kg' ? -item.quantity : 0,
-        item.name === 'rice25Kg' ? -item.quantity : 0,
-        item.name === 'rice50Kg' ? -item.quantity : 0,
-        0,
-        0,
-        0
-      )
+    if (data.type === 'general') {
+      for (let item of data.items) {
+        await StockService.updateStock(
+          'general',
+          0,
+          0,
+          0,
+          0,
+          0,
+          item.name == 'bran' ? -item.quantity : 0,
+          item.name == 'reject' ? -item.quantity : 0,
+          item.name == 'menir' ? -item.quantity : 10
+        )
+      }
+    } else {
+      for (let item of data.items) {
+        await StockService.updateStock(
+          data.type,
+          0,
+          item.name == 'rice5Kg' ? -item.quantity : 0,
+          item.name == 'rice10Kg' ? -item.quantity : 0,
+          item.name == 'rice25Kg' ? -item.quantity : 0,
+          item.name == 'rice50Kg' ? -item.quantity : 0,
+          0,
+          0,
+          0
+        )
+      }
     }
-    await StockService.updateStock('general', 0, 0, 0, 0, 0, -data.bran, -data.reject, -data.menir)
     return saleTransaction
   }
 

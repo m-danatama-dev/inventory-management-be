@@ -13,7 +13,7 @@ export default class StorageProcessService {
       responsiblePersonID: data.responsiblePersonID,
       type: data.type,
     })
-    await StockService.updateStock(data.type, data.quantity)
+    await StockService.updateStock(data.type, data.quantity, 0, 0, 0, 0, 0, 0, 0)
     return storageProcess
   }
 

@@ -6,10 +6,10 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.integer('rice5Kg').nullable()
-      table.integer('rice10Kg').nullable()
-      table.integer('rice25Kg').nullable()
-      table.integer('rice50Kg').nullable()
+      table.integer('rice_5kg').nullable()
+      table.integer('rice_10kg').nullable()
+      table.integer('rice_25kg').nullable()
+      table.integer('rice_50kg').nullable()
       table.integer('bran').notNullable()
       table.integer('reject').notNullable()
       table.integer('menir').notNullable()
