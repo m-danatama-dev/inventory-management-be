@@ -11,11 +11,7 @@ import router from '@adonisjs/core/services/router'
 import { HttpContext } from '@adonisjs/core/http'
 import { sep, normalize } from 'node:path'
 import app from '@adonisjs/core/services/app'
-import authRoute from './routes/v1/auth_route.js'
-import salesTransactionRoute from './routes/v1/sale_transaction.js'
-import purchaseTrasactionRoute from './routes/v1/purchase_transaction.js'
-import dryingProcessRoutes from './routes/v1/drying_process.js'
-import storageProcessRoutes from './routes/v1/storage_process.js'
+import v1Routes from './routes/v1/index.js'
 
 const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 
@@ -28,13 +24,9 @@ router.get('/', async ({ response }: HttpContext) => {
 
 router
   .group(() => {
-    authRoute()
-    salesTransactionRoute()
-    purchaseTrasactionRoute()
-    dryingProcessRoutes()
-    storageProcessRoutes()
+    v1Routes()
   })
-  .prefix('/api/v1')
+  .prefix('/api')
 
 router.get('/uploads/*', ({ request, response }) => {
   const filePath = request.param('*').join(sep)

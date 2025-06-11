@@ -7,7 +7,7 @@ export default class PurchaseTransactionService {
   }
 
   static async storeTransaction(data: any) {
-    const trx = await PurchaseTransaction.create({
+    const purchaseTransaction = await PurchaseTransaction.create({
       supplierName: data.supplierName,
       origin: data.origin,
       responsiblePersonID: data.responsiblePersonID,
@@ -22,35 +22,39 @@ export default class PurchaseTransactionService {
         type: item.type,
         price: item.price,
         total: item.total,
-        purchaseTransactionId: trx.id,
+        purchaseTransactionId: purchaseTransaction.id,
       }
     })
 
     await PurchaseItem.createMany(items)
 
-    return trx
+    return purchaseTransaction
   }
 
   static async getTransactionById(id: number) {
-    const trx = await PurchaseTransaction.query().where('id', id).preload('items').first()
+    const purchaseTransaction = await PurchaseTransaction.query()
+      .where('id', id)
+      .preload('items')
+      .first()
 
-    if (!trx) {
+    if (!purchaseTransaction) {
       throw new Error('Purchase transaction not found')
     }
 
-    return trx
+    return purchaseTransaction
   }
 
   static async updateTransaction(id: number, data: any) {
-    const trx = await PurchaseTransaction.findOrFail(id)
-    trx.supplierName = data.supplierName || trx.supplierName
-    trx.origin = data.origin || trx.origin
-    trx.responsiblePersonID = data.responsiblePersonID || trx.responsiblePersonID
-    trx.totalAmount = data.totalAmount || trx.totalAmount
-    await trx.save()
+    const purchaseTransaction = await PurchaseTransaction.findOrFail(id)
+    purchaseTransaction.supplierName = data.supplierName || purchaseTransaction.supplierName
+    purchaseTransaction.origin = data.origin || purchaseTransaction.origin
+    purchaseTransaction.responsiblePersonID =
+      data.responsiblePersonID || purchaseTransaction.responsiblePersonID
+    purchaseTransaction.totalAmount = data.totalAmount || purchaseTransaction.totalAmount
+    await purchaseTransaction.save()
 
     if (data.items) {
-      await PurchaseItem.query().where('PurchaseTransactionId', trx.id).delete()
+      await PurchaseItem.query().where('PurchaseTransactionId', purchaseTransaction.id).delete()
       const items = data.items.map((item: any) => {
         return {
           quantity: item.quantity,
@@ -58,19 +62,18 @@ export default class PurchaseTransactionService {
           type: item.type,
           price: item.price,
           total: item.total,
-          purchaseTransactionId: trx.id,
+          purchaseTransactionId: purchaseTransaction.id,
         }
       })
       await PurchaseItem.createMany(items)
     }
-    return trx
+    return purchaseTransaction
   }
 
   static async deleteTransaction(id: number) {
-    const trx = await PurchaseTransaction.findOrFail(id)
-    console.log('Deleting transaction:', trx.id)
-    await PurchaseItem.query().where('purchaseTransactionId', trx.id).delete()
-    await trx.delete()
-    return trx
+    const purchaseTransaction = await PurchaseTransaction.findOrFail(id)
+    await PurchaseItem.query().where('purchaseTransactionId', purchaseTransaction.id).delete()
+    await purchaseTransaction.delete()
+    return purchaseTransaction
   }
 }

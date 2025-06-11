@@ -1,7 +1,7 @@
 import router from '@adonisjs/core/services/router'
 const SaleTransactionController = () => import('#controllers/sale_transactions_controller')
 
-export default function salesTransactionRoute() {
+export default function salesTransactionRoutes() {
   router
     .group(() => {
       router.get('/', [SaleTransactionController, 'index'])
